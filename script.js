@@ -43,3 +43,36 @@ btnScrollTo.addEventListener('click', e => {
   //mordern way of scrolling
   section1.scrollIntoView({ behavior: 'smooth' });
 });
+
+//code to understand event propagation
+// function setColor(min, max) {
+//   return (Math.floor((Math.random() * (max -min +1 )) + min));    
+// }
+
+// document.querySelectorAll('.nav__link').forEach(item =>item.addEventListener(
+//   'click',
+//   function(e){
+//     console.log(this, "LINK");
+//     console.log(e.target, e.currentTarget);
+//     e.target.style.backgroundColor = `rgb(${setColor(0, 255)}, ${setColor(0, 255)}, ${setColor(0, 255)})`;
+//   },
+//   false
+// ));
+
+// document.querySelectorAll('.nav__links').forEach(item =>item.addEventListener(
+//   'click',
+//   function(e){
+//     console.log(this, "CONTAINER");
+//     console.log(e.target, e.currentTarget);
+//    this.style.backgroundColor = `rgb(${setColor(0, 255)}, ${setColor(0, 255)}, ${setColor(0, 255)})`;
+//   })
+// );
+
+// document.querySelectorAll('.nav').forEach(item =>item.addEventListener(
+//   'click',
+//   function(e){
+//     console.log(this, "NAV");
+//     console.log(e.target, e.currentTarget);
+//    this.style.backgroundColor= `rgb(${setColor(0, 255)}, ${setColor(0, 255)}, ${setColor(0, 255)})`;
+//   }
+// ))
