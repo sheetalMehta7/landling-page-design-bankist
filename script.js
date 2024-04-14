@@ -5,8 +5,9 @@ const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
-
+const header = document.querySelector('.header');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section = document.querySelectorAll('.section');
 const section1 = document.querySelector('#section--1');
 const nav = document.querySelector('.nav');
 
@@ -79,20 +80,54 @@ operationsTabContainer.addEventListener('click', function (e) {
     .classList.add('operations__content--active');
 });
 
-
 //hover effect on links(fade animation)
-function hoverEffect(e){
-  if(e.target.classList.contains("nav__link")){
-    const sibling = e.target.closest(".nav").querySelectorAll(".nav__link");
-    const logo = e.target.closest(".nav").querySelector("img");
-    sibling.forEach(li=>{if(li !== e.target){li.style.opacity = this}});
+function hoverEffect(e) {
+  if (e.target.classList.contains('nav__link')) {
+    const sibling = e.target.closest('.nav').querySelectorAll('.nav__link');
+    const logo = e.target.closest('.nav').querySelector('img');
+    sibling.forEach(li => {
+      if (li !== e.target) {
+        li.style.opacity = this;
+      }
+    });
     logo.style.opacity = this;
-   }
+  }
 }
 nav.addEventListener('mouseover', hoverEffect.bind(0.5));
 nav.addEventListener('mouseout', hoverEffect.bind(1));
 
+//sticky Navigation using intersection observer API
+const stickyNav = function (entries, observer) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+};
+const navHeight = nav.getBoundingClientRect().height;
 
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`,
+});
+
+headerObserver.observe(header);
+
+//reveal sections as we scroll
+const revealSection = function (entries, observer) {
+  const [entry] = entries;
+  if(!entry.isIntersecting) return;
+  entry.target.classList.remove('section--hidden');
+  observer.unobserve(entry.target);
+};
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15,
+});
+section.forEach(function (section) {
+  sectionObserver.observe(section);
+  section.classList.add('section--hidden');
+});
 
 //code to understand event propagation
 // function setColor(min, max) {
@@ -181,7 +216,6 @@ nav.addEventListener('mouseout', hoverEffect.bind(1));
 // }
 // });
 
-
 //hover effect on links(fade animation)
 // nav.addEventListener('mouseover', function (e) {
 //   if(e.target.classList.contains("nav__link")){
@@ -199,3 +233,31 @@ nav.addEventListener('mouseout', hoverEffect.bind(1));
 //     logo.style.opacity = "1";
 //   }
 // });
+
+//sticky Navigation
+// window.addEventListener('scroll', function () {
+//   const yCoords = section1.getBoundingClientRect().y;
+//   // if (yCoords <= 0) {
+//   //   nav.classList.add('sticky');
+//   // } else {
+//   //   nav.classList.remove('sticky');
+//   // }
+
+//   if(window.screenY >= yCoords) nav.classList.add('sticky');
+//   else nav.classList.remove('sticky');
+
+//   //not an optimize way of handling this
+// });
+
+//use of interection observer API
+// const obsCallBack = function(entries, observer){
+//   entries.forEach(entry=>console.log(entry));
+// };
+
+// const obsOptions = {
+//   root: null, // null here refers to view port, the interaction is observed b/w vwh and section1
+//   threshold: 0.1,// tells about interaction in %, it can accept array as well
+//   rootMargin: 0 //in px margin for target element, can -, +
+// }
+// const observer = new IntersectionObserver(obsCallBack, obsOptions);
+// observer.observe(section1);
