@@ -8,10 +8,13 @@ const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
+const nav = document.querySelector('.nav');
 
-const operationsTabContainer = document.querySelector(".operations__tab-container");
-const operationsTabs = document.querySelectorAll(".operations__tab");
-const operationsTabContent = document.querySelectorAll(".operations__content");
+const operationsTabContainer = document.querySelector(
+  '.operations__tab-container'
+);
+const operationsTabs = document.querySelectorAll('.operations__tab');
+const operationsTabContent = document.querySelectorAll('.operations__content');
 
 const openModal = function () {
   modal.classList.remove('hidden');
@@ -49,32 +52,45 @@ btnScrollTo.addEventListener('click', e => {
 });
 
 //scroll to particular section
-document.querySelector('.nav__links').addEventListener("click", function(e){
+document.querySelector('.nav__links').addEventListener('click', function (e) {
   e.preventDefault();
   //matching  strategy
-  if(e.target.classList.contains("nav__link")){
+  if (e.target.classList.contains('nav__link')) {
     const id = e.target.getAttribute('href');
-    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });  
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
   }
 });
 
 //tabbed components
-operationsTabContainer.addEventListener("click", function(e){
-  const clicked = e.target.closest(".operations__tab");
+operationsTabContainer.addEventListener('click', function (e) {
+  const clicked = e.target.closest('.operations__tab');
   //Gaurd clause
-  if(!clicked) return;
+  if (!clicked) return;
 
   //Remove active classes
-  operationsTabs.forEach(el=>el.classList.remove("operations__tab--active"));
-  operationsTabContent.forEach(el=>el.classList.remove("operations__content--active"));
+  operationsTabs.forEach(el => el.classList.remove('operations__tab--active'));
+  operationsTabContent.forEach(el =>
+    el.classList.remove('operations__content--active')
+  );
   //Add active class
-  clicked.classList.add("operations__tab--active");
-  document.querySelector(`.operations__content--${clicked.dataset.tab}`).classList.add("operations__content--active");
+  clicked.classList.add('operations__tab--active');
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
 });
 
 
-
-
+//hover effect on links(fade animation)
+function hoverEffect(e){
+  if(e.target.classList.contains("nav__link")){
+    const sibling = e.target.closest(".nav").querySelectorAll(".nav__link");
+    const logo = e.target.closest(".nav").querySelector("img");
+    sibling.forEach(li=>{if(li !== e.target){li.style.opacity = this}});
+    logo.style.opacity = this;
+   }
+}
+nav.addEventListener('mouseover', hoverEffect.bind(0.5));
+nav.addEventListener('mouseout', hoverEffect.bind(1));
 
 
 
@@ -122,7 +138,6 @@ operationsTabContainer.addEventListener("click", function(e){
 //   })
 // );
 
-
 // //DOM Traversing
 // const h1 = document.querySelector("h1");
 
@@ -134,19 +149,16 @@ operationsTabContainer.addEventListener("click", function(e){
 // console.log(h1.firstElementChild);
 // console.log(h1.lastElementChild);
 
-
 // //Going upwards: parents
 // console.log(h1.parentNode);
 // console.log(h1.parentElement);
 // console.log(h1.closest(".header"));
-
 
 // //Going sideways: siblings
 // console.log(h1.previousElementSibling);
 // console.log(h1.nextElementSibling);
 
 // console.log(h1.parentElement.children)
-
 
 //this is my approach of solving the problem of tabbed components
 // operationsTabContainer.addEventListener("click", function(e){
@@ -155,7 +167,7 @@ operationsTabContainer.addEventListener("click", function(e){
 //   document.querySelector(`.operations__content--${currentab}`).classList.remove("operations__content--active");
 //   const previousTab = [...operationsTabContainer.children].filter(el=>el.classList.contains("operations__tab--active"));
 //   const previousTabContent = [...operationsTabContent].filter(el=>el.classList.contains("operations__content--active"));
- 
+
 //   //remove the active class from tab and content
 //   previousTab[0].classList.remove("operations__tab--active");
 //   previousTabContent[0].classList.remove("operations__content--active");
@@ -167,4 +179,23 @@ operationsTabContainer.addEventListener("click", function(e){
 //   const activeContent = document.querySelector(`.operations__content--${tabNum}`);
 //   activeContent.classList.add("operations__content--active");
 // }
+// });
+
+
+//hover effect on links(fade animation)
+// nav.addEventListener('mouseover', function (e) {
+//   if(e.target.classList.contains("nav__link")){
+//    const sibling = e.target.closest(".nav").querySelectorAll(".nav__link");
+//    const logo = e.target.closest(".nav").querySelector("img");
+//    sibling.forEach(li=>{if(li !== e.target){li.style.opacity = "0.5"}});
+//    logo.style.opacity = "0.5";
+//   }
+// });
+// nav.addEventListener('mouseout', function (e) {
+//   if(e.target.classList.contains("nav__link")){
+//     const sibling = e.target.closest(".nav").querySelectorAll(".nav__link");
+//     const logo = e.target.closest(".nav").querySelector("img");
+//     sibling.forEach(li=>{if(li !== e.target){li.style.opacity = "1"}});
+//     logo.style.opacity = "1";
+//   }
 // });
