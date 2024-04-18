@@ -16,6 +16,11 @@ const operationsTabContainer = document.querySelector(
 );
 const operationsTabs = document.querySelectorAll('.operations__tab');
 const operationsTabContent = document.querySelectorAll('.operations__content');
+const imageTarget = document.querySelectorAll('img[data-src]');
+const slides = document.querySelectorAll('.slide');
+const sliderBtnLeft = document.querySelector('.slider__btn--left');
+const sliderBtnRight = document.querySelector('.slider__btn--right');
+let activeSlide = 1;
 
 const openModal = function () {
   modal.classList.remove('hidden');
@@ -130,7 +135,6 @@ section.forEach(function (section) {
 });
 
 //Lazing Loading Images
-const imageTarget = document.querySelectorAll('img[data-src]');
 const lazyFun = (entries, observer) => {
   const [entry] = entries;
   if (!entry.isIntersecting) return;
@@ -148,6 +152,36 @@ const imageObserver = new IntersectionObserver(lazyFun, {
 });
 
 imageTarget.forEach(img => imageObserver.observe(img));
+
+//slider (my-approach)
+(function () {
+  slides.forEach((slide, index) => {
+    if (index === 0) return;
+    slide.style.opacity = 0;
+    slide.style.visibility = 'hidden';
+  });
+})();
+function changeSlide(prevSlide) {
+  slides[prevSlide - 1].style.opacity = 0;
+  slides[prevSlide - 1].visibility = 'hidden';
+  slides[activeSlide - 1].style.opacity = 1;
+  slides[activeSlide - 1].style.visibility = 'visible';
+}
+
+sliderBtnLeft.addEventListener('click', function () {
+  const prevSlide = activeSlide;
+  if (activeSlide === 1) {
+    activeSlide = slides.length;
+  } else activeSlide--;
+  changeSlide(prevSlide);
+});
+sliderBtnRight.addEventListener('click', function () {
+  const prevSlide = activeSlide;
+  if (activeSlide === slides.length) {
+    activeSlide = 1;
+  } else activeSlide++;
+  changeSlide(prevSlide);
+});
 
 //code to understand event propagation
 // function setColor(min, max) {
