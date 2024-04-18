@@ -115,7 +115,7 @@ headerObserver.observe(header);
 //reveal sections as we scroll
 const revealSection = function (entries, observer) {
   const [entry] = entries;
-  if(!entry.isIntersecting) return;
+  if (!entry.isIntersecting) return;
   entry.target.classList.remove('section--hidden');
   observer.unobserve(entry.target);
 };
@@ -128,6 +128,26 @@ section.forEach(function (section) {
   sectionObserver.observe(section);
   section.classList.add('section--hidden');
 });
+
+//Lazing Loading Images
+const imageTarget = document.querySelectorAll('img[data-src]');
+const lazyFun = (entries, observer) => {
+  const [entry] = entries;
+  if (!entry.isIntersecting) return;
+  entry.target.src = entry.target.dataset.src;
+  entry.target.addEventListener('load', function () {
+    entry.target.classList.remove('lazy-img');
+  });
+
+  observer.unobserve(entry.target);
+};
+const imageObserver = new IntersectionObserver(lazyFun, {
+  root: null,
+  threshold: 0,
+  rootMargin: '200px',
+});
+
+imageTarget.forEach(img => imageObserver.observe(img));
 
 //code to understand event propagation
 // function setColor(min, max) {
