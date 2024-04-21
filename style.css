@@ -662,3 +662,53 @@ h4 {
   font-size: 1.5rem;
   font-weight: 400;
 }
+
+
+/* .dummy-slider{
+  position: relative;
+  max-width: 130rem;
+  margin: 0 auto;
+}
+.slider-container {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  height: 25rem;
+  max-width: 120rem;
+  margin: 0 auto;
+  position: relative;
+}
+
+.slider-item {
+  position: absolute;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  height: 20rem;
+  padding: 20px;
+  width: 38rem;
+  transition: transform 1s;
+}
+.slider__btn1 {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  border: none;
+  background: rgba(255, 255, 255, 0.7);
+  font-family: inherit;
+  color: #333;
+  border-radius: 50%;
+  height: 5rem;
+  width: 5rem;
+  font-size: 3rem;
+  cursor: pointer;
+}
+
+.slider__btn--left1 {
+  left: -2rem;
+}
+.slider__btn--right1 {
+  right: -2rem;
+} */
+
