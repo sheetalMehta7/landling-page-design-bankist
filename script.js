@@ -20,7 +20,7 @@ const imageTarget = document.querySelectorAll('img[data-src]');
 const slides = document.querySelectorAll('.slide');
 const sliderBtnLeft = document.querySelector('.slider__btn--left');
 const sliderBtnRight = document.querySelector('.slider__btn--right');
-let activeSlide = 1;
+const dotsContainer = document.querySelector('.dots');
 
 const openModal = function () {
   modal.classList.remove('hidden');
@@ -153,35 +153,105 @@ const imageObserver = new IntersectionObserver(lazyFun, {
 
 imageTarget.forEach(img => imageObserver.observe(img));
 
-//slider (my-approach)
-(function () {
-  slides.forEach((slide, index) => {
-    if (index === 0) return;
-    slide.style.opacity = 0;
-    slide.style.visibility = 'hidden';
+//slider using transform approach.
+function slider(){
+  let currSlide = 0;
+  let totalSlide = slides.length;
+  
+  const goToSlide = slideNum => {
+    slides.forEach(
+      (s, i) => (s.style.transform = `translateX(${100 * (i - slideNum)}%)`)
+    );
+  };
+  
+  const createDots = () => {
+    slides.forEach((_, i) => {
+      dotsContainer.insertAdjacentHTML(
+        'beforeend',
+        `<button class='dots__dot' data-slide=${i}></button>`
+      );
+    });
+  };
+  
+  const activateDot = (slide)=>{
+    document.querySelectorAll(".dots__dot").forEach(dot=>dot.classList.remove("dots__dot--active"));
+    document.querySelector(`.dots__dot[data-slide="${slide}"]`).classList.add("dots__dot--active");
+  }
+  
+  const init= ()=>{
+    goToSlide(0);
+    createDots();
+    activateDot(0);
+  }
+
+  init();
+  
+  const leftSlide = () => {
+    if (currSlide === 0) {
+      currSlide = totalSlide - 1;
+    } else currSlide--;
+    goToSlide(currSlide);
+    activateDot(currSlide);
+  };
+  
+  const rightSlide = () => {
+    if (currSlide === totalSlide - 1) {
+      currSlide = 0;
+    } else currSlide++;
+    goToSlide(currSlide);
+    activateDot(currSlide);
+  };
+
+  sliderBtnLeft.addEventListener('click', leftSlide);
+  sliderBtnRight.addEventListener('click', rightSlide);
+  
+  //change slides on keystroke.
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') rightSlide();
+    if (e.key === 'ArrowLeft') leftSlide();
   });
-})();
-function changeSlide(prevSlide) {
-  slides[prevSlide - 1].style.opacity = 0;
-  slides[prevSlide - 1].visibility = 'hidden';
-  slides[activeSlide - 1].style.opacity = 1;
-  slides[activeSlide - 1].style.visibility = 'visible';
+  
+  dotsContainer.addEventListener('click', function (e) {
+    if (!e.target.classList.contains('dots__dot')) return;
+    const clickedDot = e.target.dataset.slide;
+    goToSlide(clickedDot);
+    activateDot(clickedDot);
+  });
 }
 
-sliderBtnLeft.addEventListener('click', function () {
-  const prevSlide = activeSlide;
-  if (activeSlide === 1) {
-    activeSlide = slides.length;
-  } else activeSlide--;
-  changeSlide(prevSlide);
-});
-sliderBtnRight.addEventListener('click', function () {
-  const prevSlide = activeSlide;
-  if (activeSlide === slides.length) {
-    activeSlide = 1;
-  } else activeSlide++;
-  changeSlide(prevSlide);
-});
+slider();
+
+
+//slider (my-approach)
+// let activeSlide = 1;
+// (function () {
+//   slides.forEach((slide, index) => {
+//     if (index === 0) return;
+//     slide.style.opacity = 0;
+//     slide.style.visibility = 'hidden';
+//   });
+// })();
+// function changeSlide(prevSlide) {
+//   slides[prevSlide - 1].style.opacity = 0;
+//   slides[prevSlide - 1].visibility = 'hidden';
+//   slides[activeSlide - 1].style.opacity = 1;
+//   slides[activeSlide - 1].style.visibility = 'visible';
+// }
+
+// sliderBtnLeft.addEventListener('click', function () {
+//   const prevSlide = activeSlide;
+//   if (activeSlide === 1) {
+//     activeSlide = slides.length;
+//   } else activeSlide--;
+//   changeSlide(prevSlide);
+// });
+// sliderBtnRight.addEventListener('click', function () {
+//   const prevSlide = activeSlide;
+//   if (activeSlide === slides.length) {
+//     activeSlide = 1;
+//   } else activeSlide++;
+//   changeSlide(prevSlide);
+// });
 
 //code to understand event propagation
 // function setColor(min, max) {
